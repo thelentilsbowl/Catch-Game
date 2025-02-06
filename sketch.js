@@ -95,15 +95,16 @@ class Rock {
   constructor(x, y, c){  
     this.x = x;
     this.y = y;
-    this.w = random(50, 100);
-    this.h = 35
+    this.w = 30;
+    this.h = 16;
     this.c = c;
 }
   
   //This creates the shape of the rock and colors it
   body(){
-    fill(this.c);
-    rect(this.x, this.y, this.w, this.h)}
+    textSize(50)
+    text('💣', this.x, this.y)
+  }
   
   //This moves the rock and increases its speed by basing it on a constantly increasing frameCount
   move(){
@@ -119,10 +120,8 @@ class Rock {
   checkCollision(){
     if (player1.x + player1.w/2 > this.x && player1.x < this.x + this.w && player1.y + player1.h/2 > this.y && player1.y < this.y + this.h){
       
-  //This creates the end game message and stops the entire game with the noLoop()
-      textSize(30)
-      text(deathMessage + "Your score was: " + t, 150 - margin, height/2)
-      noLoop()      
+      this.y = 0;
+      this.x = random(width) 
     } 
   } 
 }
