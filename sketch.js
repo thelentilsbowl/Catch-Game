@@ -1,72 +1,59 @@
-//Declares variables 
-let rocks = []; // This is the rock array in which the rock objects are placed in
-let player1;
-let rocksNum = 3
-let t = 0;
-let deathMessage = "Game Over. "
-let margin = 0;
+//Declarations
+let backing = [];
+let button1;
+let notPlay = true;
+let deadlyObArr = [];
+let deadlyObNum = 2;
+let cows = [];
+let cowsNum = 2;
+let fallRate = 0.0025;
+let backSelect = 1;
 let missed = 0;
-  
-function setup() {
-  createCanvas(700, 700);
-  
-  // This for statement creates rocksNum amount of rocks and places them within the array
-  for (let i = 0; i < rocksNum; i++ ){
-    rocks[i] = new Rock (random(30, width - 30), random(0, 70))
-  }
-
-    player1 = new Player(); //This creates the player 
-  }
 
 
-function draw() {
-  
-  background(256);
-  
-  //This calls all the functions for the rocks, enabling their properties
-  for (let i = 0; i < rocksNum; i++){
-    rocks[i].body();
-    rocks[i].move();
-    rocks[i].checkCollision();
-  }
-  
-  //This calls the player functions to allow it to be created, moved and kept in bounds
-  player1.body();
-  player1.move();
-  player1.home();
-  
-  //This displays the score in the top left corner. 
-  fill(0, 0, 0)
-  textSize(20)
-  text("Score: " + t, 10, 20)
-  
-  fill(0, 0, 0)
-  textSize(20)
-  text("Missed: " + missed, 10, 40)
-  
+//Image Preloads
+function preload() {
+  backing[0] = loadImage("Images/b3.jpg");
+  backing[1] = loadImage("Images/b4.jpg");
+  backing[2] = loadImage("Images/b5.jpg");
+
+  bomb1 = loadImage("Images/bomb1.png");
+  nuke1 = loadImage("Images/nuke.png");
+  cow1 = loadImage("Images/cow.png");
+  heart1 = loadImage("Images/heart.png");
+  playBtn1 = loadImage("Images/playBtn.png");
+  farmer1 = loadImage("Images/farmer.png")
 }
 
-  //This is the Player class 
+//Button class
+class Button1 {
+  constructor(x,y,w,h){
+    this.x = x;
+    this.y = y;
+    this.w = w;  
+    this.h = h}
+
+  clicked(MouseX, MouseY) {
+    return (MouseX > this.x && MouseX < this.x + this.w && MouseY > this.y && 
+    MouseY < this.y + this.h)}
+}
+
+//Player class
 class Player {
-  constructor(){
-    this.x = width/2;
-    this.y = height - 100;
-    this.w = 50;
-    this.h = 20;
-    this.c = color(255,0,0);
+  constructor(x,y,w,h){
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
   }
   
-  //This creates the shape of the player and colors it
-  body(){
-    fill(this.c);
-    rect(this.x, this.y, this.w, this.h);
+  show() {
+    image(farmer1, this.x, this.y, this.w, this.h)
   }
   
-  //This function allows the player to move based oon the mouse coordinates
   move(){
     this.x = mouseX - player1.w/2}
   
-  //This ensures the player stays within the confines of the canvas by resetting its position by   its width.
   home(){
     if (this.x < 0){
       this.x = 0}
@@ -75,48 +62,94 @@ class Player {
       this.x = width - player1.w}
 }
 
-  //This creates the Rock class
-  class Rock {
+
+//Setup function
+function setup() {
   
-  constructor(x, y){  
-    this.x = x;
-    this.y = y;
-    this.w = 30;
-    this.h = 16;
+  createCanvas(750, 750);
+  let randomNum = int(random(0, 3));  
+  image(backing[randomNum], 0, 0, 750, 750);
+
+  button1 = new playButton(275, 275, 200, 200)
+  backButton0 = new backBtn0 (50, 500, 100, 100)
+  backButton1 = new backBtn1 (275, 500, 100, 100)
+  backButton2 = new backBtn2 (500, 500, 100, 100)
+  
+  for (let i = 0; i < deadlyObNum; i++ ){
+    deadlyObArr[i] = new deadlyOb (random(0, (width-150)), random(-400, -200), 100, 100)
+  }
+  
+  for (let i = 0; i < cowsNum; i++ ){
+    cows[i] = new cow(random(0, (width-150)), random(-400, -200), 300, 300)
+  }
+  
+  player1 = new Player(300, 500, 200, 200)
+  
+ 
+}
+
+//Draw function
+function draw() {  
+  
+  image(backing[backSelect], 0, 0, 750, 750)
+  
+  if (notPlay){
+    button1.show();
+    backButton0.show();
+    backButton1.show();
+    backButton2.show();}
+  
+  else if (missed < 5 && notPlay == false) {
+  for(let i = 0; i < deadlyObNum; i ++){
+    deadlyObArr[i].show()
+    deadlyObArr[i].move()
+    deadlyObArr[i].checkCollision();
+  }
+    
+  for(let i = 0; i < cowsNum; i ++){
+    cows[i].show()
+    cows[i].move()
+    cows[i].checkCollision();
+  }
+    
+    
+    player1.show();
+    player1.move();
+    player1.home();
+    
 }
   
-  //This creates the shape of the rock and colors it
-  body(){
-    textSize(50)
-    text('💣', this.x, this.y)
+  text("Missed: " + missed, 100, 100)
+  
+  if (missed > 4) {
+    notPlay = true
+    missed = 0
+ }
+}
+
+//Mouse pressed function
+
+function mousePressed() {
+
+  if (notPlay && button1.clicked(mouseX, mouseY)) {
+    console.log('Play button pressed');
+    notPlay = false;
   }
   
-  //This moves the rock and increases its speed by basing it on a constantly increasing             frameCount
-  move(){
-    let fallRate = 0.0025;
-    
-    if (missed < 5) {
-    this.y += (frameCount * fallRate)}
-    
-    else (this.y = -30);
-    
-  //This resets the rock back to the top of the canvas
-    if (this.y > height){
-      this.y = 0;
-      this.x = random(width)
-      missed ++
-    }
+  else if (notPlay && backButton0.clicked(mouseX, mouseY)){
+    console.log('Backing button pressed');
+    backSelect = 0  
+
   }
   
-  //This checks for collsions by checking if the corners of the player are within the area of the rock.
-  checkCollision(){
-    if (player1.x + player1.w/2 > this.x  && player1.x - player1.w/2 < this.x + this.w &&             player1.y + player1.h/2 > this.y && player1.y < this.y + this.h){
-      
-      this.y = 0;
-      this.x = random(width) 
-      
-      t++
-    } 
-  } 
+  else if (notPlay && backButton1.clicked(mouseX, mouseY)){
+    console.log('Backing button pressed');
+    backSelect = 1
+  }
+  
+  else if (notPlay && backButton2.clicked(mouseX, mouseY)){
+    console.log('Backing button pressed');
+    backSelect = 2 
+  }
 }
 
