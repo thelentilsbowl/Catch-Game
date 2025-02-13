@@ -116,6 +116,9 @@ function mousePressed() {
     for(let i = 0; i < cowsNum; i ++){
     cows[i].y = -200
   }
+    for(let i = 0; i < deadlyObNum; i ++){
+    deadlyObArr[i].y = -200
+    }
 }
   
   else if (notPlay && backButton0.clicked(mouseX, mouseY)){
