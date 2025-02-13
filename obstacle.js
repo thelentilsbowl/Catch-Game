@@ -16,7 +16,7 @@
     
     
      if(missed < 5 && notPlay == false) {
-     this.y += 4
+     this.y += speed
   }    
    
 }
