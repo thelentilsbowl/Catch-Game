@@ -9,7 +9,7 @@ let cowsNum = 2;
 let fallRate = 0.0025;
 let backSelect = 1;
 let missed = 0;
-
+let cowSpawn;
 
 //Image Preloads
 function preload() {
@@ -74,9 +74,10 @@ function setup() {
   backButton0 = new backBtn0 (50, 500, 100, 100)
   backButton1 = new backBtn1 (275, 500, 100, 100)
   backButton2 = new backBtn2 (500, 500, 100, 100)
+  cowSpawn =  random(-400, -200)
   
-  for (let i = 0; i < deadlyObNum; i++ ){
-    deadlyObArr[i] = new deadlyOb (random(0, (width-150)), random(-400, -200), 100, 100)
+ for (let i = 0; i < deadlyObNum; i++ ){
+    deadlyObArr[i] = new deadlyOb (random(0, (width-150)), cowSpawn, 100, 100)
   }
   
   for (let i = 0; i < cowsNum; i++ ){
@@ -85,9 +86,7 @@ function setup() {
   
   player1 = new Player(300, 500, 200, 200)
   
- 
 }
-
 //Draw function
 function draw() {  
   
@@ -97,7 +96,11 @@ function draw() {
     button1.show();
     backButton0.show();
     backButton1.show();
-    backButton2.show();}
+    backButton2.show();
+  for(let i = 0; i < cowsNum; i ++){
+    cows[i].stop()
+  }
+  }
   
   else if (missed < 5 && notPlay == false) {
   for(let i = 0; i < deadlyObNum; i ++){
@@ -124,8 +127,9 @@ function draw() {
   if (missed > 4) {
     notPlay = true
     missed = 0
+  }
  }
-}
+
 
 //Mouse pressed function
 
@@ -134,7 +138,11 @@ function mousePressed() {
   if (notPlay && button1.clicked(mouseX, mouseY)) {
     console.log('Play button pressed');
     notPlay = false;
+    
+    for(let i = 0; i < cowsNum; i ++){
+    cows[i].y = -200
   }
+}
   
   else if (notPlay && backButton0.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
@@ -152,4 +160,3 @@ function mousePressed() {
     backSelect = 2 
   }
 }
-
