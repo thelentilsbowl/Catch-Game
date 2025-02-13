@@ -10,6 +10,7 @@ let fallRate = 0.0025;
 let backSelect = 1;
 let missed = 0;
 let cowSpawn;
+let speed = 4;
 
 //Image Preloads
 function preload() {
@@ -96,13 +97,15 @@ function draw() {
     
 }
   
-  text("Missed: " + missed, 100, 100)
-  
   if (missed > 4) {
     notPlay = true
     missed = 0
   }
- }
+  
+  textSize(30)
+  text("Missed: " + missed, 25, 50)
+  
+}
 
 
 //Mouse pressed function
@@ -116,24 +119,26 @@ function mousePressed() {
     for(let i = 0; i < cowsNum; i ++){
     cows[i].y = -200
   }
+    
     for(let i = 0; i < deadlyObNum; i ++){
     deadlyObArr[i].y = -200
     }
-}
-  
+  } 
   else if (notPlay && backButton0.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 0  
-
+    
   }
   
   else if (notPlay && backButton1.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 1
+    speed = 8
   }
   
   else if (notPlay && backButton2.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 2 
+    speed = 12
   }
 }
