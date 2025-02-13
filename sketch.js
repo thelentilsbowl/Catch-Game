@@ -38,46 +38,20 @@ class Button1 {
     MouseY < this.y + this.h)}
 }
 
-//Player class
-class Player {
-  constructor(x,y,w,h){
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-  }
-  
-  show() {
-    image(farmer1, this.x, this.y, this.w, this.h)
-  }
-  
-  move(){
-    this.x = mouseX - player1.w/2}
-  
-  home(){
-    if (this.x < 0){
-      this.x = 0}
-    
-    if (this.x > width)
-      this.x = width - player1.w}
-}
-
-
 //Setup function
 function setup() {
   
+  let randomNum = int(random(0, 3)); 
   createCanvas(750, 750);
-  let randomNum = int(random(0, 3));  
   image(backing[randomNum], 0, 0, 750, 750);
 
   button1 = new playButton(275, 275, 200, 200)
   backButton0 = new backBtn0 (50, 500, 100, 100)
   backButton1 = new backBtn1 (275, 500, 100, 100)
   backButton2 = new backBtn2 (500, 500, 100, 100)
-  cowSpawn =  random(-400, -200)
   
  for (let i = 0; i < deadlyObNum; i++ ){
-    deadlyObArr[i] = new deadlyOb (random(0, (width-150)), cowSpawn, 100, 100)
+    deadlyObArr[i] = new deadlyOb (random(0, (width-150)), random(-400, -200), 100, 100)
   }
   
   for (let i = 0; i < cowsNum; i++ ){
