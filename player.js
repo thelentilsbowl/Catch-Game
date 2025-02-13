@@ -18,6 +18,6 @@ class Player {
     if (this.x < 0){
       this.x = 0}
     
-    if (this.x > width)
-      this.x = width - player1.w}
+    if (this.x > width - player1.w + 20)
+      this.x = width - player1.w + 20}
 }
