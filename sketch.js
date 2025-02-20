@@ -140,7 +140,6 @@ function draw() {
     missed = 0;
     bombContact = 0;
     lives = 3;  
-    nukeTrue = false;
   }
   
 }
@@ -168,6 +167,8 @@ function mousePressed() {
     console.log('Backing button pressed');
     backSelect = 0  
     speed = 4
+    nukeTrue = false
+
     
   }
   
@@ -175,7 +176,7 @@ function mousePressed() {
     console.log('Backing button pressed');
     backSelect = 1
     speed = 8
-    
+    nukeTrue = false
     
   }
   
