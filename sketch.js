@@ -11,12 +11,17 @@ let backSelect = 1;
 let missed = 0;
 let cowSpawn;
 let speed = 4;
+let bombContact = 0;
+let lives = 3;
+let score=0;
+let nukeTrue = false;
+let nukeArr = [];
 
 //Image Preloads
 function preload() {
-  backing[0] = loadImage("Images/b3.jpg");
-  backing[1] = loadImage("Images/b4.jpg");
-  backing[2] = loadImage("Images/b5.jpg");
+  backing[0] = loadImage("Images/lvl1.jpg");
+  backing[1] = loadImage("Images/lvl2.jpg");
+  backing[2] = loadImage("Images/lvl3.jpg");
 
   bomb1 = loadImage("Images/bomb1.png");
   nuke1 = loadImage("Images/nuke.png");
@@ -24,6 +29,7 @@ function preload() {
   heart1 = loadImage("Images/heart.png");
   playBtn1 = loadImage("Images/playBtn.png");
   farmer1 = loadImage("Images/farmer.png")
+  backingSound = createAudio("backingSound.mp3")
 }
 
 //Button class
@@ -48,8 +54,11 @@ function setup() {
 
   button1 = new playButton(275, 275, 200, 200)
   backButton0 = new backBtn0 (50, 500, 100, 100)
-  backButton1 = new backBtn1 (275, 500, 100, 100)
-  backButton2 = new backBtn2 (500, 500, 100, 100)
+  backButton1 = new backBtn1 (325, 500, 100, 100)
+  backButton2 = new backBtn2 (600, 500,100, 100)  
+  backingSound.volume(0.1)
+  backingSound.loop()
+  
   
  for (let i = 0; i < deadlyObNum; i++ ){
     deadlyObArr[i] = new deadlyOb (random(0, (width-150)), random(-400, -200), 100, 100)
@@ -59,11 +68,19 @@ function setup() {
     cows[i] = new cow(random(0, (width-150)), random(-400, -200), 300, 300)
   }
   
+  for (let i = 0; i < 1; i++ ){
+    nukeArr[i] = new deadlyObNuke(random(0, (width-150)), random(-400, -200), 200, 200)
+  }
+  
   player1 = new Player(300, 500, 200, 200)
+  
+  
   
 }
 //Draw function
 function draw() {  
+  
+  scoreRate = int(frameCount/60);
   
   image(backing[backSelect], 0, 0, 750, 750)
   
@@ -72,6 +89,12 @@ function draw() {
     backButton0.show();
     backButton1.show();
     backButton2.show();
+    frameCount = 0
+    textSize(25)
+    text("Level 1", 60, 550)
+    text("Level 2", 335, 550)
+    text("Level 3", 610, 550)
+    text("Last Score: " + score, 25, 50)
   for(let i = 0; i < cowsNum; i ++){
     cows[i].stop()
   }
@@ -82,6 +105,11 @@ function draw() {
     deadlyObArr[i].show()
     deadlyObArr[i].move()
     deadlyObArr[i].checkCollision();
+    
+    textSize(30)
+    text("Lives: " + (lives - bombContact), 25, 50,)
+    text("Missed: " + missed, 25, 100)
+    text("Score: " + score, 25, 150)
   }
     
   for(let i = 0; i < cowsNum; i ++){
@@ -90,20 +118,30 @@ function draw() {
     cows[i].checkCollision();
   }
     
+  if (nukeTrue){
+    for(let i = 0; i < 1; i ++){
+    nukeArr[i].show()
+    nukeArr[i].move()
+    nukeArr[i].checkCollision();
+  }
+}
     
-    player1.show();
+    player1.show(); 
     player1.move();
     player1.home();
     
 }
   
-  if (missed > 4) {
-    notPlay = true
-    missed = 0
-  }
   
-  textSize(30)
-  text("Missed: " + missed, 25, 50)
+  
+  
+ if ((lives - bombContact) < 1 || missed > 4) {
+    notPlay = true;
+    missed = 0;
+    bombContact = 0;
+    lives = 3;  
+    nukeTrue = false;
+  }
   
 }
 
@@ -115,6 +153,8 @@ function mousePressed() {
   if (notPlay && button1.clicked(mouseX, mouseY)) {
     console.log('Play button pressed');
     notPlay = false;
+    score = 0;
+    frameCount = 0
     
     for(let i = 0; i < cowsNum; i ++){
     cows[i].y = -200
@@ -127,6 +167,7 @@ function mousePressed() {
   else if (notPlay && backButton0.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 0  
+    speed = 4
     
   }
   
@@ -134,11 +175,15 @@ function mousePressed() {
     console.log('Backing button pressed');
     backSelect = 1
     speed = 8
+    
+    
   }
   
   else if (notPlay && backButton2.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 2 
     speed = 12
-  }
+    nukeTrue = true;
+    deadlyObNum = 1;
+    }
 }

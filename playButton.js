@@ -6,5 +6,4 @@ class playButton extends Button1 {
   
   show(){
     image(playBtn1, this.x, this.y, this.w, this.h)}
-
 }

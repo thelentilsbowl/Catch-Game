@@ -22,4 +22,13 @@ class cow extends obstacle {
     }
   }
   
+  checkCollision(){
+  if(player1.x + (player1.w)/2 > this.x && player1.x < this.x + (this.w)/1.5 && player1.y > this.y && player1.y < this.y + (this.h)/2){
+    console.log("Collision")
+    this.y = random(-450, 0);
+    this.x = random(0, (width-150))
+    score++
+    }
+  }
+  
 }
