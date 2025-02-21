@@ -40,7 +40,7 @@ class Button1 {
     this.w = w;  
     this.h = h}
 
-  clicked(MouseX, MouseY) {
+    clicked(MouseX, MouseY) {
     return (MouseX > this.x && MouseX < this.x + this.w && MouseY > this.y && 
     MouseY < this.y + this.h)}
 }
@@ -56,21 +56,19 @@ function setup() {
   backButton0 = new backBtn0 (50, 500, 100, 100)
   backButton1 = new backBtn1 (325, 500, 100, 100)
   backButton2 = new backBtn2 (600, 500,100, 100)  
-  backingSound.volume(0.1)
+  backingSound.volume(0)
   backingSound.loop()
   
-  
- for (let i = 0; i < deadlyObNum; i++ ){
-    deadlyObArr[i] = new deadlyOb (random(0, (width-150)), random(-400, -200), 100, 100)
-  }
+//New instances of objects pushed into Array 
+
+  for (let i = 0; i < deadlyObNum; i++ ){
+    deadlyObArr[i] = new deadlyOb (random(0, (width-200)), random(-400, -200), 100, 100)}
   
   for (let i = 0; i < cowsNum; i++ ){
-    cows[i] = new cow(random(0, (width-150)), random(-400, -200), 300, 300)
-  }
+    cows[i] = new cow(random(0, (width-600)), random(-400, -200), 300, 300)}
   
   for (let i = 0; i < 1; i++ ){
-    nukeArr[i] = new deadlyObNuke(random(0, (width-150)), random(-400, -200), 200, 200)
-  }
+    nukeArr[i] = new deadlyObNuke(random(0, (width-400)), random(-400, -200), 200, 200)}
   
   player1 = new Player(300, 500, 200, 200)
   
@@ -80,68 +78,72 @@ function setup() {
 //Draw function
 function draw() {  
   
-  scoreRate = int(frameCount/60);
-  
   image(backing[backSelect], 0, 0, 750, 750)
   
+//Shows main menu
   if (notPlay){
+    
     button1.show();
     backButton0.show();
     backButton1.show();
     backButton2.show();
+    
     frameCount = 0
+    
     textSize(25)
     text("Level 1", 60, 550)
     text("Level 2", 335, 550)
     text("Level 3", 610, 550)
-    text("Last Score: " + score, 25, 50)
-  for(let i = 0; i < cowsNum; i ++){
-    cows[i].stop()
-  }
-  }
+    text("Last Score: " + score, 25, 50)}
   
-  else if (missed < 5 && notPlay == false) {
-  for(let i = 0; i < deadlyObNum; i ++){
-    deadlyObArr[i].show()
-    deadlyObArr[i].move()
-    deadlyObArr[i].checkCollision();
+//Shows all objects
+    else if (missed < 5 && notPlay == false){
+      
+//Calls all bomb functions
     
+    for(let i = 0; i < deadlyObNum; i ++){
+      deadlyObArr[i].show()
+      deadlyObArr[i].move()
+      deadlyObArr[i].checkCollision()}
+      
+//Calls all cow functions
+    
+    for(let i = 0; i < cowsNum; i ++){
+      cows[i].show()
+      cows[i].move()
+      cows[i].checkCollision()}
+      
+//Calls all nuke functions
+
+    if (nukeTrue){
+      for(let i = 0; i < 1; i ++){
+      nukeArr[i].show()
+      nukeArr[i].move()
+      nukeArr[i].checkCollision()}}
+      
+//Displays Score, Missed Items and Lives 
+      
     textSize(30)
     text("Lives: " + (lives - bombContact), 25, 50,)
     text("Missed: " + missed, 25, 100)
     text("Score: " + score, 25, 150)
-  }
-    
-  for(let i = 0; i < cowsNum; i ++){
-    cows[i].show()
-    cows[i].move()
-    cows[i].checkCollision();
-  }
-    
-  if (nukeTrue){
-    for(let i = 0; i < 1; i ++){
-    nukeArr[i].show()
-    nukeArr[i].move()
-    nukeArr[i].checkCollision();
-  }
-}
-    
+  
+//Calls all player functions
+      
     player1.show(); 
     player1.move();
     player1.home();
     
 }
   
+//Checks for endgame requirements
   
-  
-  
- if ((lives - bombContact) < 1 || missed > 4) {
-    notPlay = true;
-    missed = 0;
-    bombContact = 0;
-    lives = 3;  
-  }
-  
+    if ((lives - bombContact) < 1 || missed > 4) {
+      notPlay = true;
+      missed = 0;
+      bombContact =0;
+      lives = 3;  
+  } 
 }
 
 
@@ -149,42 +151,42 @@ function draw() {
 
 function mousePressed() {
 
+//Checks if play button is pressed
   if (notPlay && button1.clicked(mouseX, mouseY)) {
     console.log('Play button pressed');
     notPlay = false;
     score = 0;
     frameCount = 0
     
+//Sets all objects off screen
+    
     for(let i = 0; i < cowsNum; i ++){
-    cows[i].y = -200
-  }
+    cows[i].y = -200}
     
     for(let i = 0; i < deadlyObNum; i ++){
-    deadlyObArr[i].y = -200
-    }
-  } 
+    deadlyObArr[i].y = -200}} 
+  
+//Level 1 select button
   else if (notPlay && backButton0.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 0  
     speed = 4
-    nukeTrue = false
-
-    
-  }
+    nukeTrue = false}
+  
+//Level 2 select button
   
   else if (notPlay && backButton1.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 1
     speed = 8
-    nukeTrue = false
-    
-  }
+    nukeTrue = false}
   
+//Level 3 select button
+ 
   else if (notPlay && backButton2.clicked(mouseX, mouseY)){
     console.log('Backing button pressed');
     backSelect = 2 
     speed = 12
-    nukeTrue = true;
-    deadlyObNum = 1;
-    }
+    nukeTrue = true
+    deadlyObNum = 1}
 }
