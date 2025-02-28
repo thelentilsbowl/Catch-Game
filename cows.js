@@ -17,6 +17,14 @@ class cow extends obstacle {
       missed++
     }
   }
+
+  //Stops the objects from travelling down the screen
+
+  stop() {
+    if (missed > 4) {
+      this.y = -20;
+    }
+  }
   
 //Checks for collision between player and cow object
   
