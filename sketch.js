@@ -27,7 +27,6 @@ function preload() {
   bomb1 = loadImage("Images/bomb1.png");
   nuke1 = loadImage("Images/nuke.png");
   cow1 = loadImage("Images/cow.png");
-  heart1 = loadImage("Images/heart.png");
   playBtn1 = loadImage("Images/playBtn.png");
   farmer1 = loadImage("Images/farmer.png")
   backingSound = createAudio("backingSound.mp3")
