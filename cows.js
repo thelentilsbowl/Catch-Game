@@ -1,44 +1,40 @@
 //Cow class
 
 class cow extends obstacle {
-  
-  constructor(x, y, w, h){  
-    super (x, y, w, h)}
- 
-//Displays cows
-  
-  show(){
-    
-    image(cow1, this.x, this.y, this.w, this.h)
-    
-    if (this.y > height && missed < 5){
-      this.y = random(-450, 0)
-      this.x = random(0, (width-150))
-      missed++
-    }
+  constructor(x, y, w, h) {
+    super(x, y, w, h);
   }
 
-  //Stops the objects from travelling down the screen
+  //Displays cows
 
-  stop() {
-    if (missed > 4) {
-      this.y = -20;
+  show() {
+    image(cow1, this.x, this.y, this.w, this.h);
+
+    if (this.y > height && missed < 5) {
+      this.y = random(-450, 0);
+      this.x = random(0, width - 300);
+      missed++;
     }
   }
   
-//Checks for collision between player and cow object
+  //Checks for collision between player and cow object
   
-  checkCollision(){
-  if(player1.x + (player1.w)/2 > this.x && player1.x < this.x + (this.w)/1.5 && player1.y >   this.y && player1.y < this.y + (this.h)/2){
-    
-//Resets cow location off screen
 
-      this.y = random(-450, 0)
-      this.x = random(0, (width-150))
+  checkCollision() {
+    if (
+      player1.x + player1.w / 2 > this.x &&
+      player1.x < this.x + this.w / 1.5 &&
+      player1.y > this.y &&
+      player1.y < this.y + this.h / 2
+    ) {
+      //Resets cow location off screen
 
-//Increments score
-    
-    score++
+      this.y = random(-450, 0);
+      this.x = random(0, width - 300);
+
+      //Increments score
+
+      score++;
     }
-  } 
+  }
 }
