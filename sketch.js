@@ -192,6 +192,7 @@ function draw() {
       backSelect = 0;
       speed = 4;
       nukeTrue = false} 
+      deadlyObNum = 2
     
 //Level 2 click check
     
@@ -199,7 +200,8 @@ function draw() {
       console.log("Backing button pressed");
       backSelect = 1;
       speed = 8;
-      nukeTrue = false} 
+      nukeTrue = false 
+      deadlyObNum = 3}
     
 //Level 3 click check 
     
