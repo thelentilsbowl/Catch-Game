@@ -16,10 +16,27 @@ class deadlyOb extends obstacle {
 
   checkCollision() {
     if (
-      player1.x + player1.w / 2 > this.x &&
-      player1.x < this.x + this.w &&
-      player1.y > this.y &&
-      player1.y < this.y + this.h / 2
+      
+      (this.x < player1.x + player1.w/1.5 &&
+      this.x > player1.x &&
+      this.y < player1.y + player1.h &&
+      this.y > player1.y)||
+      
+      (this.x + this.w < player1.x + player1.w/1.5 &&
+      this.x + this.w > player1.x &&
+      this.y < player1.y + player1.h &&
+      this.y > player1.y)||
+      
+      (this.x < player1.x + player1.w/1.5 &&
+      this.x > player1.x &&
+      this.y + this.h/1.5 < player1.y + player1.h &&
+      this.y + this.h/1.5 > player1.y)||
+      
+      (this.x + this.w < player1.x + player1.w/1.5 &&
+      this.x + this.w > player1.x &&
+      this.y + this.h/1.5 < player1.y + player1.h &&
+      this.y + this.h/1.5 > player1.y)
+    
     ) {
       //Resets bomb location off screen
 
