@@ -158,11 +158,11 @@ function draw() {
 
 //Check condition to see if player has surpassed the game threshold 
   
- /* if (lives - bombContact < 1 || missed > 4) {
+ if (lives - bombContact < 1 || missed > 4) {
     notPlay = true;
     missed = 0;
     bombContact = 0;
-    lives = 3}*/
+    lives = 3}
 }
 
 //Mouse pressed function
